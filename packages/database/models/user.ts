@@ -14,6 +14,7 @@ export const usersTable = pgTable("users", {
 
   email: varchar("email", { length: 255 }).notNull().unique(),
   emailVerified: boolean("email_verified").default(false),
+  password: varchar("password", { length: 255 }),
 
   profileImageUrl: text("profile_image_url"),
 

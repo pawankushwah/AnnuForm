@@ -1,28 +1,25 @@
-import { db } from "@repo/database";
+import { db, eq } from "@repo/database";
 import { usersTable } from "@repo/database/schema";
-import { env } from "../env";
-import { googleOAuth2Client } from "../clients/google-oauth";
-import { GetAuthenticationMethodOutputSchema } from "./model";
+import { UserSchema } from "./model";
 
 class UserService {
-  public async getAuthenticationMethods(): Promise<
-    ReadonlyArray<GetAuthenticationMethodOutputSchema>
-  > {
-    const supportedAuthenticationProviders: GetAuthenticationMethodOutputSchema[] = [];
 
-    const isGoogleConfigured = !!(env.GOOGLE_OAUTH_CLIENT_ID && env.GOOGLE_OAUTH_CLIENT_SECRET);
-
-    if (isGoogleConfigured) {
-      const url = googleOAuth2Client.generateAuthUrl();
-      supportedAuthenticationProviders.push({
-        provider: "GOOGLE_OAUTH",
-        displayName: "Google",
-        displayText: "Signin with Google",
-        authUrl: url,
-      });
+  private async getUserByEmail(email: string) {
+    const result = await db.select().from(usersTable).where(eq(usersTable.email, email));
+    if (result && result.length > 0) {
+      return result[0];
     }
+    return null;
+  }
 
-    return supportedAuthenticationProviders;
+  public async createUser(payload: UserSchema): Promise<UserSchema | null> {
+    const { fullName, email, password } = payload;
+    const isUserExist = await this.getUserByEmail(email);
+    if (isUserExist) {
+      throw new Error("User already exists");
+    }
+    const user = await db.insert(usersTable).values({ fullName, email, password }).returning();
+    return user[0];
   }
 }
 

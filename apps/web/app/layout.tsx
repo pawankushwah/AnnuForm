@@ -13,9 +13,14 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Streamyst",
-  description: "Media Forwarding",
+  title: "AnnuForm",
+  description: "Build beautiful, free online forms with AnnuForm.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
+
+import { AnimatedBackground } from "~/components/AnimatedBackground";
 
 export default function RootLayout({
   children,
@@ -23,8 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <AnimatedBackground />
         <GlobalProviders>{children}</GlobalProviders>
       </body>
     </html>

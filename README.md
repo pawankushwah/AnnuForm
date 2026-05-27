@@ -10,6 +10,19 @@ Run the following command:
 npx create-turbo@latest
 ```
 
+## Deployment to Vercel
+
+This Turborepo is configured to deploy seamlessly to Vercel, hosting both the Next.js frontend and the Express API in serverless functions.
+
+1. Create a project in [Vercel](https://vercel.com/new) and link this GitHub repository.
+2. In the Vercel project settings, set the **Framework Preset** to `Turborepo`.
+3. Overwrite the **Build Command** to `turbo build`.
+4. Set the **Output Directory** to the default.
+5. In the **Environment Variables** section, add your Neon DB connection string:
+   - `DATABASE_URL=postgres://user:password@...neon.tech/neondb?sslmode=require`
+   - `JWT_SECRET=your_super_secret_jwt_key`
+6. Click **Deploy**. Vercel will use the `vercel.json` provided in the repository to route API requests (`/api/*`, `/trpc/*`, `/docs/*`) to the backend and everything else to the Next.js app.
+
 ## What's inside?
 
 This Turborepo includes the following packages/apps:

@@ -9,12 +9,13 @@ import { apiReference } from "@scalar/express-api-reference";
 import { serverRouter, createContext } from "@repo/trpc/server";
 
 import { env } from "./env";
+import rateLimit from "express-rate-limit";
 
 export const app = express();
 const openApiDocument = generateOpenApiDocument(serverRouter, {
-  title: "Streamyst OpenAPI",
+  title: "Form Builder OpenAPI",
   version: "1.0.0",
-  baseUrl: env.BASE_URL.concat("/api"),
+  baseUrl: env.NODE_ENV !== "prod" ? "http://localhost:" + env.PORT + "/api" : env.BASE_URL.concat("/api"),
 });
 
 if (env.NODE_ENV !== "prod") {
@@ -27,12 +28,21 @@ if (env.NODE_ENV !== "prod") {
 
 app.use(express.json());
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+app.use("/api", apiLimiter);
+app.use("/trpc", apiLimiter);
 app.get("/", (req, res) => {
-  return res.json({ message: "Streamyst is up and running..." });
+  return res.json({ message: "AnnuForm is up and running..." });
 });
 
 app.get("/health", (req, res) => {
-  return res.json({ message: "Streamyst server is healthy", healthy: true });
+  return res.json({ message: "AnnuForm server is healthy", healthy: true });
 });
 
 logger.debug(`openapi.json: ${env.BASE_URL}/openapi.json`);

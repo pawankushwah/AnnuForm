@@ -25,17 +25,10 @@ export const GlobalProviders: React.FC<{ children: React.ReactNode }> = ({ child
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <NextThemesProvider
-        attribute="class"
-        defaultTheme="light"
-        enableSystem
-        disableTransitionOnChange
-      >
         <trpc.Provider queryClient={queryClient} client={trpcClient}>
           {children}
           <Toaster />
         </trpc.Provider>
-      </NextThemesProvider>
     </QueryClientProvider>
   );
 };

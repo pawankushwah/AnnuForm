@@ -5,8 +5,8 @@ AnnuForm is a powerful, dynamic form builder allowing you to create custom forms
 ## Demo Credentials
 
 You can test out the application using the following demo credentials:
-- **Email:** `demo@annuform.com`
-- **Password:** `demo123`
+- **Email:** `you@example.com`
+- **Password:** `you123`
 
 ## Scaler API Documentation
 

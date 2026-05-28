@@ -38,7 +38,7 @@ export const formsRouter = router({
 
       if (!isPro) {
         const formsCountResult = await db.select({ count: count() }).from(formsTable).where(eq(formsTable.creatorId, ctx.user.id));
-        if (formsCountResult[0].count >= 3) {
+        if ((formsCountResult[0]?.count ?? 0) >= 3) {
           throw new Error("You have reached the limit of 3 forms on the Starter plan. Please upgrade to create more.");
         }
       }
@@ -97,7 +97,7 @@ export const formsRouter = router({
 
       if (!isPro) {
         const formsCountResult = await db.select({ count: count() }).from(formsTable).where(eq(formsTable.creatorId, ctx.user.id));
-        if (formsCountResult[0].count >= 3) {
+        if ((formsCountResult[0]?.count ?? 0) >= 3) {
           throw new Error("You have reached the limit of 3 forms on the Starter plan. Please upgrade to create more.");
         }
       }
@@ -142,7 +142,7 @@ export const formsRouter = router({
       })
       .from(responsesTable)
       .innerJoin(formsTable, eq(responsesTable.formId, formsTable.id))
-      .where(eq(formsTable.creatorId, ctx.user.id))
+      .where(eq(responsesTable.userId, ctx.user.id))
       .orderBy(desc(responsesTable.createdAt));
       
       return responses;

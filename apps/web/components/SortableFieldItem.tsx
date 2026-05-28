@@ -6,7 +6,8 @@ export function SortableFieldItem({
   field, 
   index, 
   updateField, 
-  removeField 
+  removeField,
+  duplicateField
 }: { 
   field: any, 
   index: number, 

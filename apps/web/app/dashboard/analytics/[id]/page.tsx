@@ -92,11 +92,14 @@ export default function AnalyticsPage() {
       const d = new Date(r.createdAt);
       if (d >= start && d <= end) {
         if (timeView === "DAILY") {
-          counts[format(d, "HH:00")]++;
+          const key = format(d, "HH:00");
+          counts[key] = (counts[key] ?? 0) + 1;
         } else if (timeView === "WEEKLY") {
-          counts[format(d, "EEE")]++;
+          const key = format(d, "EEE");
+          counts[key] = (counts[key] ?? 0) + 1;
         } else {
-          counts[format(d, "d")]++;
+          const key = format(d, "d");
+          counts[key] = (counts[key] ?? 0) + 1;
         }
       }
     });

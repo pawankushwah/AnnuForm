@@ -12,7 +12,7 @@ class UserService {
     return null;
   }
 
-  public async createUser(payload: UserSchema): Promise<UserSchema | null> {
+  public async createUser(payload: UserSchema): Promise<any> {
     const { fullName, email, password } = payload;
     const isUserExist = await this.getUserByEmail(email);
     if (isUserExist) {

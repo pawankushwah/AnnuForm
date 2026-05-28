@@ -55,6 +55,7 @@ export function SortableFieldItem({
             value={field.label} 
             onChange={(e) => updateField(index, { label: e.target.value })}
             className="font-medium text-lg w-full bg-transparent border-b border-transparent hover:border-gray-200 focus:border-blue-500 focus:outline-none px-1 py-0.5"
+            placeholder="Question Title"
           />
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
             <button 

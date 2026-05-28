@@ -18,6 +18,9 @@ export const usersTable = pgTable("users", {
 
   profileImageUrl: text("profile_image_url"),
 
+  plan: varchar("plan", { length: 20 }).default("starter"),
+  planEndsAt: timestamp("plan_ends_at"),
+
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
 });

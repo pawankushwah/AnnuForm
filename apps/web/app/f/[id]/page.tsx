@@ -9,8 +9,9 @@ import { CheckCircle2, AlertCircle } from "lucide-react";
 export default function FormFillerPage() {
   const params = useParams();
   const id = params.id as string;
-  
+
   const { data: form, isLoading, error } = trpc.public.getForm.useQuery({ id }, { retry: false });
+  const { data: user } = trpc.auth.me.useQuery(undefined, { retry: false });
   const submitMutation = trpc.public.submitForm.useMutation();
 
   const [formData, setFormData] = useState<Record<string, any>>({});
@@ -32,6 +33,11 @@ export default function FormFillerPage() {
     setFormData(prev => ({ ...prev, [fieldId]: value }));
   };
 
+  const resetFormData = () => {
+    setFormData({});
+    setSubmitted(false);
+  };
+
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">Loading form...</div>;
   }
@@ -46,36 +52,126 @@ export default function FormFillerPage() {
     );
   }
 
-  const themeClasses = {
+  const themeClasses: Record<string, string> = {
+    default: "bg-gray-50 dark:bg-gray-950",
     tech: "bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-slate-100",
     anime: "bg-gradient-to-br from-pink-100 via-purple-100 to-indigo-100 dark:from-pink-950 dark:via-purple-950 dark:to-indigo-950",
     minimal: "bg-white dark:bg-black",
-    default: "bg-gray-50 dark:bg-gray-950"
+    movies: "bg-gradient-to-br from-red-900 via-black to-black text-amber-50",
+    games: "bg-gradient-to-tr from-green-900 via-emerald-900 to-black text-green-400 font-mono",
+    startups: "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-indigo-950",
+    os: "bg-gradient-to-r from-cyan-900 to-blue-900 text-white font-sans",
+    events: "bg-gradient-to-br from-orange-100 to-rose-100 dark:from-orange-950 dark:to-rose-950",
+    communities: "bg-gradient-to-br from-teal-50 to-emerald-100 dark:from-teal-950 dark:to-emerald-950",
   };
 
-  const cardClasses = {
+  const cardClasses: Record<string, string> = {
+    default: "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-lg",
     tech: "bg-slate-800/80 border-slate-700 backdrop-blur-md text-white shadow-2xl shadow-blue-500/20",
     anime: "bg-white/80 dark:bg-gray-900/80 border-pink-200 dark:border-pink-900 backdrop-blur-sm shadow-xl shadow-pink-500/10",
     minimal: "bg-white dark:bg-black border-gray-200 dark:border-gray-800 shadow-sm",
-    default: "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-lg"
+    movies: "bg-black/80 border-red-900/50 backdrop-blur-md shadow-2xl shadow-red-900/40",
+    games: "bg-black/90 border border-green-500/30 shadow-[0_0_30px_rgba(16,185,129,0.2)]",
+    startups: "bg-white/90 dark:bg-slate-800/90 border-indigo-100 dark:border-indigo-900/50 shadow-xl rounded-3xl",
+    os: "bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl rounded-2xl",
+    events: "bg-white/90 dark:bg-gray-900/90 border-orange-200 dark:border-orange-900/50 shadow-xl",
+    communities: "bg-white/90 dark:bg-gray-900/90 border-teal-200 dark:border-teal-900/50 shadow-xl",
   };
 
-  const inputClasses = {
+  const inputClasses: Record<string, string> = {
+    default: "bg-white dark:bg-gray-950 border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500",
     tech: "bg-slate-900/50 border-slate-600 focus:border-blue-500 focus:ring-blue-500 text-white placeholder:text-slate-500",
     anime: "bg-white dark:bg-gray-800 border-pink-200 dark:border-pink-800 focus:border-pink-500 focus:ring-pink-500",
     minimal: "bg-transparent border-b-2 border-gray-300 dark:border-gray-700 focus:border-black dark:focus:border-white rounded-none px-0",
-    default: "bg-white dark:bg-gray-950 border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500"
+    movies: "bg-black/50 border-red-900/50 focus:border-red-500 focus:ring-red-500 text-amber-50",
+    games: "bg-black border-green-500/50 focus:border-green-400 focus:ring-green-400 text-green-400 placeholder:text-green-900",
+    startups: "bg-slate-50 dark:bg-slate-900 border-indigo-200 dark:border-indigo-800 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl",
+    os: "bg-black/20 border-white/10 focus:border-cyan-400 focus:ring-cyan-400 text-white placeholder:text-white/50",
+    events: "bg-white dark:bg-gray-950 border-orange-200 dark:border-orange-800 focus:border-orange-500 focus:ring-orange-500",
+    communities: "bg-white dark:bg-gray-950 border-teal-200 dark:border-teal-800 focus:border-teal-500 focus:ring-teal-500",
   };
 
-  const buttonClasses = {
+  const buttonClasses: Record<string, string> = {
+    default: "bg-blue-600 hover:bg-blue-700 text-white shadow-md",
     tech: "bg-blue-600 hover:bg-blue-700 text-white shadow-[0_0_15px_rgba(37,99,235,0.5)]",
     anime: "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white shadow-lg shadow-pink-500/30",
     minimal: "bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-none",
-    default: "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+    movies: "bg-red-700 hover:bg-red-800 text-amber-50 shadow-lg shadow-red-900/50 uppercase tracking-widest",
+    games: "bg-green-600 hover:bg-green-500 text-black font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(16,185,129,0.4)]",
+    startups: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/30 rounded-xl",
+    os: "bg-white/20 hover:bg-white/30 text-white backdrop-blur-md shadow-lg border border-white/20",
+    events: "bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/30",
+    communities: "bg-teal-600 hover:bg-teal-700 text-white shadow-lg shadow-teal-500/30",
   };
 
   const currentTheme = form.theme as keyof typeof themeClasses || 'default';
   const fields = form.schema?.fields || [];
+
+  const parseMessage = (rawMessage: string) => {
+    if (!rawMessage) return "";
+    let finalMessage = rawMessage;
+    fields.forEach((f: any) => {
+      if (f.label) {
+        const val = formData[f.id];
+        let valStr = "";
+        if (Array.isArray(val)) valStr = val.join(", ");
+        else if (val !== undefined && val !== null) valStr = String(val);
+        
+        finalMessage = finalMessage.replace(new RegExp(`{{\\s*${f.label.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')}\\s*}}`, 'gi'), valStr);
+      }
+    });
+    return finalMessage;
+  };
+
+  const getSubmissionMessage = () => {
+    const settings = form.schema?.settings;
+    let message = "Your response has been submitted successfully.";
+    
+    if (settings) {
+      let foundMatch = false;
+      if (settings.rules && Array.isArray(settings.rules)) {
+        for (const rule of settings.rules) {
+          const answer = formData[rule.fieldId];
+          if (answer === undefined || answer === null || answer === "") continue;
+
+          let isMatch = false;
+          switch (rule.operator) {
+            case 'equals':
+              isMatch = String(answer).toLowerCase() === String(rule.value).toLowerCase();
+              break;
+            case 'notEquals':
+              isMatch = String(answer).toLowerCase() !== String(rule.value).toLowerCase();
+              break;
+            case 'contains':
+              if (Array.isArray(answer)) {
+                isMatch = answer.some(a => String(a).toLowerCase().includes(String(rule.value).toLowerCase()));
+              } else {
+                isMatch = String(answer).toLowerCase().includes(String(rule.value).toLowerCase());
+              }
+              break;
+            case 'greaterThan':
+              isMatch = Number(answer) > Number(rule.value);
+              break;
+            case 'lessThan':
+              isMatch = Number(answer) < Number(rule.value);
+              break;
+          }
+
+          if (isMatch && rule.message) {
+            message = rule.message;
+            foundMatch = true;
+            break;
+          }
+        }
+      }
+      
+      if (!foundMatch && settings.defaultSubmitMessage) {
+        message = settings.defaultSubmitMessage;
+      }
+    }
+    
+    return parseMessage(message);
+  };
 
   if (submitted) {
     return (
@@ -83,9 +179,9 @@ export default function FormFillerPage() {
         <div className={`w-full max-w-md p-8 rounded-2xl border text-center ${cardClasses[currentTheme]}`}>
           <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-6" />
           <h2 className="text-3xl font-bold mb-3">Thank You!</h2>
-          <p className="text-opacity-80 mb-8">Your response has been submitted successfully.</p>
-          <button 
-            onClick={() => setSubmitted(false)}
+          <p className="text-opacity-80 mb-8 whitespace-pre-wrap">{getSubmissionMessage()}</p>
+          <button
+            onClick={() => resetFormData()}
             className={`px-6 py-2 rounded-lg font-medium transition-all ${buttonClasses[currentTheme]}`}
           >
             Submit another response
@@ -97,7 +193,13 @@ export default function FormFillerPage() {
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center p-4 md:p-8 ${themeClasses[currentTheme]}`}>
-      <div className={`w-full max-w-2xl p-6 md:p-10 rounded-2xl border ${cardClasses[currentTheme]}`}>
+      <div className={`w-full max-w-2xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden p-6 sm:p-8 md:p-10 transition-all duration-500 ${cardClasses[currentTheme]}`}>
+        {user && !submitted && (
+          <div className="mb-6 px-4 py-2 rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm flex items-center justify-between border border-blue-100 dark:border-blue-900/50">
+            <span>Logged in as <strong>{user.email}</strong></span>
+            <a href="/login" className="text-xs underline hover:text-blue-800 dark:hover:text-blue-200">Not you?</a>
+          </div>
+        )}
         <div className="mb-8 pb-8 border-b border-current/10">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{form.title}</h1>
           {form.description && (
@@ -111,10 +213,10 @@ export default function FormFillerPage() {
               <label className="block text-lg font-medium">
                 {field.label} {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>
-              
+
               {field.type === 'shortText' && (
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   required={field.required}
                   value={formData[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -122,9 +224,9 @@ export default function FormFillerPage() {
                   placeholder="Your answer"
                 />
               )}
-              
+
               {field.type === 'longText' && (
-                <textarea 
+                <textarea
                   required={field.required}
                   value={formData[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -132,10 +234,10 @@ export default function FormFillerPage() {
                   placeholder="Your answer"
                 />
               )}
-              
+
               {field.type === 'email' && (
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   required={field.required}
                   value={formData[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -143,10 +245,10 @@ export default function FormFillerPage() {
                   placeholder="you@example.com"
                 />
               )}
-              
+
               {field.type === 'number' && (
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   required={field.required}
                   value={formData[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -154,13 +256,13 @@ export default function FormFillerPage() {
                   placeholder="0"
                 />
               )}
-              
+
               {field.type === 'singleSelect' && (
                 <div className="space-y-3 mt-4">
                   {field.options?.map((opt: string, idx: number) => (
                     <label key={idx} className="flex items-center gap-3 p-3 rounded-lg border border-current/10 hover:bg-current/5 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
+                      <input
+                        type="radio"
                         name={field.id}
                         required={field.required}
                         value={opt}
@@ -173,15 +275,15 @@ export default function FormFillerPage() {
                   ))}
                 </div>
               )}
-              
+
               {field.type === 'checkbox' && (
                 <div className="space-y-3 mt-4">
                   {field.options?.map((opt: string, idx: number) => {
                     const isChecked = formData[field.id]?.includes(opt) || false;
                     return (
                       <label key={idx} className="flex items-center gap-3 p-3 rounded-lg border border-current/10 hover:bg-current/5 cursor-pointer transition-colors">
-                        <input 
-                          type="checkbox" 
+                        <input
+                          type="checkbox"
                           name={field.id}
                           value={opt}
                           checked={isChecked}
@@ -201,7 +303,7 @@ export default function FormFillerPage() {
                   })}
                 </div>
               )}
-              
+
               {field.type === 'rating' && (
                 <div className="flex items-center gap-2 mt-2">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -218,20 +320,20 @@ export default function FormFillerPage() {
                   ))}
                 </div>
               )}
-              
+
               {field.type === 'date' && (
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   required={field.required}
                   value={formData[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
                   className={`w-full p-3 rounded-lg border focus:outline-none focus:ring-2 transition-all ${inputClasses[currentTheme]}`}
                 />
               )}
-              
+
               {field.type === 'url' && (
-                <input 
-                  type="url" 
+                <input
+                  type="url"
                   required={field.required}
                   value={formData[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -243,8 +345,8 @@ export default function FormFillerPage() {
           ))}
 
           <div className="pt-8">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={submitMutation.isPending}
               className={`w-full md:w-auto px-8 py-3 rounded-lg text-lg font-bold transition-all disabled:opacity-70 disabled:cursor-not-allowed ${buttonClasses[currentTheme]}`}
             >

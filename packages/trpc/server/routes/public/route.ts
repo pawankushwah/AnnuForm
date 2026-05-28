@@ -2,7 +2,7 @@ import { z } from "zod";
 import { publicProcedure, router } from "../../trpc";
 import { generatePath } from "../../utils/path-generator";
 import { db } from "@repo/database";
-import { formsTable, responsesTable } from "@repo/database/schema";
+import { formsTable, responsesTable, usersTable } from "@repo/database/schema";
 import { eq, desc, and } from "drizzle-orm";
 
 const TAGS = ["PublicForms"];
@@ -46,7 +46,14 @@ export const publicRouter = router({
         description: formsTable.description,
         theme: formsTable.theme,
         createdAt: formsTable.createdAt,
-      }).from(formsTable).where(and(eq(formsTable.isPublished, true), eq(formsTable.visibility, "PUBLIC"))).orderBy(desc(formsTable.createdAt));
+        creator: {
+          fullName: usersTable.fullName
+        }
+      })
+      .from(formsTable)
+      .leftJoin(usersTable, eq(formsTable.creatorId, usersTable.id))
+      .where(and(eq(formsTable.isPublished, true), eq(formsTable.visibility, "PUBLIC")))
+      .orderBy(desc(formsTable.createdAt));
       return forms;
     })
 });

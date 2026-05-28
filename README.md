@@ -1,6 +1,28 @@
-# Turborepo starter
+# AnnuForm - Dynamic Form Builder
 
-This Turborepo starter is maintained by the Turborepo core team.
+AnnuForm is a powerful, dynamic form builder allowing you to create custom forms, set conditional logic, and gather analytics instantly.
+
+## Demo Credentials
+
+You can test out the application using the following demo credentials:
+- **Email:** `demo@annuform.com`
+- **Password:** `demo123`
+
+## Scaler API Documentation
+
+AnnuForm integrates seamlessly with external services and can be extended using the Scaler API framework.
+- **Base URL:** `/api`
+- **Authentication:** Bearer Token (JWT)
+
+**Key Endpoints:**
+- `GET /api/public/forms/:id` - Fetch public form schema
+- `POST /api/public/forms/:id/submit` - Submit a new response to a form
+- `GET /api/forms` - List authenticated user's forms
+- `POST /api/forms` - Create a new form
+
+*For a full interactive OpenAPI documentation, run the application and navigate to `/docs/swagger`.*
+
+---
 
 ## Using this example
 
@@ -49,7 +71,7 @@ This Turborepo has some additional tools already setup for you:
 
 To build all apps and packages, run the following command:
 
-```
+```bash
 cd my-turborepo
 
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
@@ -63,7 +85,7 @@ pnpm exec turbo build
 
 You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
 
-```
+```bash
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo build --filter=docs
 
@@ -77,7 +99,7 @@ pnpm exec turbo build --filter=docs
 
 To develop all apps and packages, run the following command:
 
-```
+```bash
 cd my-turborepo
 
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
@@ -91,7 +113,7 @@ pnpm exec turbo dev
 
 You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
 
-```
+```bash
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo dev --filter=web
 
@@ -110,7 +132,7 @@ Turborepo can use a technique known as [Remote Caching](https://turborepo.com/do
 
 By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
 
-```
+```bash
 cd my-turborepo
 
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
@@ -126,7 +148,7 @@ This will authenticate the Turborepo CLI with your [Vercel account](https://verc
 
 Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
 
-```
+```bash
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo link
 

@@ -9,11 +9,12 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@repo/services": "workspace:*",
     "@repo/database": "workspace:*",
-    "drizzle-orm": "^0.45.1",
+    "@repo/services": "workspace:*",
     "@trpc/client": "^11.8.1",
     "@trpc/server": "^11.8.1",
+    "drizzle-orm": "^0.45.1",
+    "razorpay": "^2.9.6",
     "trpc-to-openapi": "^3.1.0",
     "zod": "^4.3.5"
   }

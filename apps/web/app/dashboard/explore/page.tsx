@@ -2,45 +2,23 @@
 
 import { trpc } from "~/trpc/client";
 import Link from "next/link";
-import { LayoutTemplate, Search, Eye } from "lucide-react";
+import { LayoutTemplate, Search, Eye, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 
 export default function ExplorePage() {
-  const { data: user } = trpc.auth.me.useQuery(undefined, { retry: false });
-  const { data: forms, isLoading } = trpc.public.exploreForms.useQuery();
-  console.log(forms, " forms")
+  const { data: forms, isLoading, error } = trpc.public.exploreForms.useQuery();
 
   return (
-    <div className="min-h-screen bg-transparent">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b bg-white/50 dark:bg-gray-950/50 backdrop-blur-md justify-center">
-        <div className="container mx-auto flex items-center justify-between w-full">
-          <Link className="flex items-center justify-center" href="/">
-            <img src="/logo.png" alt="AnnuForm Logo" className="h-6 w-6" />
-            <span className="ml-2 font-bold text-xl tracking-tight text-blue-600">AnnuForm</span>
-          </Link>
-          <nav className="flex gap-4 sm:gap-6 items-center">
-            {user ? (
-              <Link className="text-sm font-medium hover:underline underline-offset-4" href="/dashboard">
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link className="text-sm font-medium hover:underline underline-offset-4" href="/login">
-                  Login
-                </Link>
-                <Link className="text-sm font-medium bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors" href="/login">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </nav>
-        </div>
-      </header>
+    <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-950 overflow-auto">
+      <div className="h-14 border-b bg-white dark:bg-gray-900 flex items-center px-6 shrink-0 sticky top-0 z-10">
+        <h1 className="font-bold text-lg flex items-center gap-2">
+          Public Forms
+        </h1>
+      </div>
 
-      <main className="container mx-auto px-4 md:px-6 py-12">
-        <div className="flex flex-col items-center text-center space-y-4 mb-12">
-          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Explore Public Forms</h1>
-          <p className="max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+      <main className="p-6 max-w-7xl mx-auto w-full">
+        <div className="flex flex-col items-center text-center space-y-4 mb-8">
+          <p className="max-w-[700px] text-gray-500 md:text-lg dark:text-gray-400">
             Discover templates and public forms created by the community.
           </p>
           <div className="w-full max-w-md relative mt-4">
@@ -48,12 +26,18 @@ export default function ExplorePage() {
             <input
               type="text"
               placeholder="Search forms..."
-              className="w-full h-12 pl-10 pr-4 rounded-full border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full h-12 pl-10 pr-4 rounded-full border shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 bg-white dark:bg-gray-900"
             />
           </div>
         </div>
 
-        {isLoading ? (
+        {error ? (
+          <div className="text-center py-20 border rounded-2xl bg-white/50 dark:bg-gray-900/50 shadow-sm flex flex-col items-center">
+            <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-red-500">Error getting Forms</h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">{error.message || "An unexpected error occurred while fetching public forms."}</p>
+          </div>
+        ) : isLoading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="flex flex-col justify-between rounded-xl border bg-white dark:bg-gray-900 overflow-hidden shadow-sm animate-pulse">
@@ -71,15 +55,15 @@ export default function ExplorePage() {
             ))}
           </div>
         ) : forms?.length === 0 ? (
-          <div className="text-center py-20 border rounded-2xl bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm shadow-sm">
+          <div className="text-center py-20 border rounded-2xl bg-white/50 dark:bg-gray-900/50 shadow-sm">
             <LayoutTemplate className="mx-auto h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-xl font-bold mb-2">No forms found</h3>
             <p className="text-gray-500 dark:text-gray-400 mb-6">There are currently no public forms available in the gallery.</p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-6 py-2"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-10 px-6 py-2"
             >
-              Be the first one to create a form!
+              Create the first one!
             </Link>
           </div>
         ) : (
@@ -114,3 +98,4 @@ export default function ExplorePage() {
     </div>
   );
 }
+

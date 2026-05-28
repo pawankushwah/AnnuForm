@@ -15,6 +15,13 @@
       "when": 1779904467281,
       "tag": "0001_ancient_senator_kelly",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779930652022,
+      "tag": "0002_tense_nicolaos",
+      "breakpoints": true
     }
   ]
 }

@@ -4,47 +4,47 @@ import { ArrowRight, LayoutTemplate, Shield, Zap } from "lucide-react";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b justify-center">
-        <div className="container mx-auto flex items-center justify-between w-full">
-          <Link className="flex items-center justify-center" href="/">
-            <img src="/logo.png" alt="AnnuForm Logo" className="h-6 w-6" />
-            <span className="ml-2 font-bold text-xl tracking-tight text-primary">AnnuForm</span>
+      <header className="px-4 lg:px-8 h-20 flex items-center border-b justify-center bg-white/80 dark:bg-gray-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="container mx-auto flex items-center justify-between w-full max-w-6xl">
+          <Link className="flex items-center justify-center group" href="/">
+            <img src="/logo.png" alt="AnnuForm Logo" className="h-8 w-8 group-hover:scale-110 transition-transform" />
+            <span className="ml-3 font-bold text-2xl tracking-tight text-primary">AnnuForm</span>
           </Link>
-          <nav className="flex gap-4 sm:gap-6">
-            <Link className="text-sm font-medium hover:underline underline-offset-4" href="/explore">
+          <nav className="flex items-center gap-6 sm:gap-8">
+            <Link className="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors" href="/explore">
               Explore
             </Link>
-            <Link className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">
+            <Link className="text-sm font-medium text-gray-600 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400 transition-colors" href="/pricing">
               Pricing
             </Link>
-            <Link className="text-sm font-medium hover:underline underline-offset-4" href="/login">
+            <Link className="text-sm font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-full transition-colors" href="/login">
               Login
             </Link>
           </nav>
         </div>
       </header>
       <main className="flex-1">
-        <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48">
-          <div className="relative container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2 max-w-3xl">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Build Dynamic Forms in <span className="text-primary text-blue-600">Seconds</span>
+        <section className="relative w-full py-20 md:py-32 lg:py-48 bg-gradient-to-b from-blue-50/50 to-white dark:from-blue-950/20 dark:to-gray-950">
+          <div className="relative container mx-auto px-4 md:px-6 max-w-6xl">
+            <div className="flex flex-col items-center space-y-8 text-center">
+              <div className="space-y-6 max-w-4xl">
+                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                  Build Dynamic Forms in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Seconds</span>
                 </h1>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                <p className="mx-auto max-w-[800px] text-gray-500 md:text-xl lg:text-2xl leading-relaxed dark:text-gray-400">
                   Create, publish, and analyze beautifully designed forms. Share public templates, build unlisted private forms, and track every response with ease.
                 </p>
               </div>
-              <div className="space-x-4">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-blue-600 px-10 text-base font-semibold text-white shadow-xl shadow-blue-500/20 transition-all hover:bg-blue-700 hover:scale-105 focus-visible:outline-none"
                   href="/login"
                 >
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  Get Started for Free
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
-                  className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-12 items-center justify-center rounded-full border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 px-10 text-base font-semibold transition-all hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 focus-visible:outline-none"
                   href="/explore"
                 >
                   Explore Templates

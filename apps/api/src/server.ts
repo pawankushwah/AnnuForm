@@ -15,10 +15,10 @@ export const app = express();
 const openApiDocument = generateOpenApiDocument(serverRouter, {
   title: "Form Builder OpenAPI",
   version: "1.0.0",
-  baseUrl: env.NODE_ENV !== "prod" ? "http://localhost:" + env.PORT + "/api" : env.BASE_URL.concat("/api"),
+  baseUrl: env.NODE_ENV !== "production" ? "http://localhost:" + env.PORT + "/api" : env.BASE_URL.concat("/api"),
 });
 
-if (env.NODE_ENV !== "prod") {
+if (env.NODE_ENV !== "production") {
   app.use(
     cors({
       origin: "*",

@@ -7,12 +7,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "~/components/u
 import { trpc } from "~/trpc/client";
 import { toast } from "sonner";
 
-export default function PricingCards({ isDashboard = false }: { isDashboard?: boolean }) {
+export default function PricingCards({ isDashboard = false, isPublic = false }: { isDashboard?: boolean, isPublic?: boolean }) {
   const [isYearly, setIsYearly] = useState(false);
   const [currency, setCurrency] = useState<"USD" | "INR">("USD");
   const [mounted, setMounted] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
-  
+
   const utils = trpc.useUtils();
   const createOrder = trpc.payments.createOrder.useMutation();
   const verifyPayment = trpc.payments.verifyPayment.useMutation({
@@ -108,17 +108,15 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
         <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-lg inline-flex">
           <button
             onClick={() => setIsYearly(false)}
-            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              !isYearly ? "bg-white dark:bg-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-100"
-            }`}
+            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-colors ${!isYearly ? "bg-white dark:bg-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-100"
+              }`}
           >
             Monthly
           </button>
           <button
             onClick={() => setIsYearly(true)}
-            className={`relative px-6 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center ${
-              isYearly ? "bg-white dark:bg-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-100"
-            }`}
+            className={`relative px-6 py-2.5 rounded-md text-sm font-medium transition-colors flex items-center ${isYearly ? "bg-white dark:bg-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-100"
+              }`}
           >
             Yearly
             <span className="absolute -top-3 -right-2 inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 border border-green-200 dark:border-green-800">
@@ -146,7 +144,7 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
             <li className="flex items-center"><Check className="text-green-500 h-4 w-4 mr-2 shrink-0" /> Community support</li>
           </ul>
           {isDashboard ? (
-            <button 
+            <button
               disabled
               className="mt-6 block w-full rounded-md border border-gray-300 py-2 text-center font-medium bg-gray-50 text-gray-400 dark:bg-gray-800/50 dark:border-gray-800 cursor-not-allowed text-sm">
               Current Plan
@@ -179,7 +177,7 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
             <li className="flex items-center"><Check className="text-blue-500 h-4 w-4 mr-2 shrink-0" /> Priority support</li>
             <li className="flex items-center"><Check className="text-blue-500 h-4 w-4 mr-2 shrink-0" /> Remove AnnuForm branding</li>
           </ul>
-          <button 
+          <button
             onClick={handleUpgrade}
             disabled={createOrder.isPending}
             className="mt-6 block w-full rounded-md bg-blue-600 py-2 text-center font-medium text-white hover:bg-blue-700 transition-colors shadow-md text-sm disabled:opacity-50">
@@ -199,8 +197,8 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
             <li className="flex items-center"><Check className="text-gray-400 dark:text-gray-500 h-4 w-4 mr-2 shrink-0" /> SSO & advanced security</li>
             <li className="flex items-center"><Check className="text-gray-400 dark:text-gray-500 h-4 w-4 mr-2 shrink-0" /> Custom integrations</li>
           </ul>
-          <button 
-            onClick={() => setShowContactModal(true)} 
+          <button
+            onClick={() => setShowContactModal(true)}
             className="mt-6 block w-full rounded-md border border-gray-300 py-2 text-center font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm">
             Contact Sales
           </button>
@@ -213,8 +211,8 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
             <DialogTitle>Contact Sales</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-3 mt-4">
-            <a 
-              href="mailto:pawankushwahmail@gmail.com" 
+            <a
+              href="mailto:pawankushwahmail@gmail.com"
               className="flex items-center p-3 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
             >
               <div className="h-10 w-10 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-full flex items-center justify-center shrink-0">
@@ -225,9 +223,9 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
                 <p className="text-xs text-gray-500 truncate">pawankushwahmail@gmail.com</p>
               </div>
             </a>
-            
-            <a 
-              href="https://wa.me/919303011791" 
+
+            <a
+              href="https://wa.me/919303011791"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center p-3 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
             >
@@ -239,9 +237,9 @@ export default function PricingCards({ isDashboard = false }: { isDashboard?: bo
                 <p className="text-xs text-gray-500 truncate">+91 9303011791</p>
               </div>
             </a>
-            
-            <a 
-              href="tel:+919303011791" 
+
+            <a
+              href="tel:+919303011791"
               className="flex items-center p-3 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
             >
               <div className="h-10 w-10 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-full flex items-center justify-center shrink-0">

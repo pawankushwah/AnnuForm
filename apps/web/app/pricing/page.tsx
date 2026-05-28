@@ -20,15 +20,15 @@ export default function PricingPage() {
           </nav>
         </div>
       </header>
-      
+
       <main className="flex-1 py-12 md:py-24">
         <div className="container px-4 md:px-6 mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl">Simple, transparent pricing</h1>
             <p className="mt-4 text-xl text-gray-500">Everything you need to build powerful forms.</p>
           </div>
-          
-          <PricingCards />
+
+          <PricingCards isPublic={true} />
         </div>
       </main>
     </div>
